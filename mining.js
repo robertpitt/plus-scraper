@@ -42,6 +42,8 @@ http.get(baseOptions, function(response){
 
 		processPackages();
 	});
+}).on('error', function(e) {
+    console.log("Got error<getting base>: " + e.message);
 });
 
 var processPackages = function()
@@ -61,7 +63,9 @@ var processPackages = function()
 
 				response.pipe(fs.createWriteStream("./data/segment_" + index + ".txt"));
 				console.log("Piping " + index + " of " + totalPackages * index + " into ./data/segment_" + index + ".txt");
-			});
+			}).on('error', function(e) {
+    console.log("Got error<getting packages>: " + e.message);
+});
 		})(i);
 	}
 }
