@@ -8,6 +8,7 @@
 var http	= require('http');
 var url		= require('url');
 var fs		= require('fs');
+var zlib 	= require('zlib'); 
 var locRegex = new RegExp("<loc>(.*?)</loc>","gi");
 var packages = [];
 
@@ -61,7 +62,7 @@ var processPackages = function()
 					return;
 				}
 
-				response.pipe(fs.createWriteStream("./data/segment_" + index + ".txt"));
+				response.pipe(zlib.createGunzip()).pipe(fs.createWriteStream("./data/segment_" + index + ".txt"));
 				console.log("Piping " + index + " of " + totalPackages * index + " into ./data/segment_" + index + ".txt");
 			}).on('error', function(e) {
     console.log("Got error<getting packages>: " + e.message);
